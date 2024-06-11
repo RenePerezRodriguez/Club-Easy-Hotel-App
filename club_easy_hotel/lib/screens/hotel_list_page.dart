@@ -20,17 +20,26 @@ class _HotelListPageState extends State<HotelListPage> {
     futureHotels = fetchHotels();
   }
 
-  void sendMessageToWhatsApp(String phoneNumber) async {
-                              // El número de teléfono debe incluir el código de país y estar en formato internacional
-                              const String message = "Hola le hablo desde la app de Club Easy Hotel, me gustaría obtener más información sobre el hotel."; // Personaliza este mensaje
-                              final String whatsappUrl = "whatsapp://send?phone=$phoneNumber&text=${Uri.encodeFull(message)}";
+ void sendMessageToWhatsApp(String phoneNumber) async {
+  const String message = "Hola le hablo desde la app de Club Easy Hotel, me gustaría obtener más información sobre el hotel.";
+  final Uri whatsappUri = Uri.parse("whatsapp://send?phone=+$phoneNumber&text=${Uri.encodeFull(message)}");
+  final Uri whatsappWebUri = Uri.parse("https://wa.me/$phoneNumber/?text=${Uri.encodeFull(message)}");
 
-                              if (await canLaunch(whatsappUrl)) {
-                                await launch(whatsappUrl);
-                              } else {
-                                throw 'No se pudo abrir WhatsApp';
-                              }
-                            }
+  if (await canLaunchUrl(whatsappUri)) {
+    await launchUrl(whatsappUri);
+  } else if (await canLaunchUrl(whatsappWebUri)) {
+    await launchUrl(whatsappWebUri);
+  } else {
+    // Manejo de errores si no se puede abrir ni WhatsApp ni WhatsApp Web
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('No se pudo abrir WhatsApp ni WhatsApp Web.'),
+      ),
+    );
+  }
+}
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

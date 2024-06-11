@@ -51,5 +51,22 @@
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Esta aplicación necesita acceder a tu ubicación siempre para proporcionar funcionalidades basadas en la misma.</string>
 
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>http</string>
+	</array>
+	
+	<key>CFBundleURLTypes</key>
+		<array>
+			<dict>
+				<key>CFBundleURLSchemes</key>
+				<array>
+					<string>myapp</string>
+				</array>
+				<key>CFBundleURLName</key>
+				<string>com.easyhotel</string>
+			</dict>
+		</array>
+
 </dict>
 </plist>
