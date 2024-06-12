@@ -13,7 +13,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  StreamSubscription? _sub; // Variable para la suscripción al stream
+  StreamSubscription? _sub;
+  bool _isLoggedIn = false; // Añade una variable para rastrear el estado de inicio de sesión
 
   @override
   void initState() {
@@ -23,13 +24,11 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void dispose() {
-    // Cancela la suscripción al stream cuando el widget se deshaga
     _sub?.cancel();
     super.dispose();
   }
 
   void _handleDeepLink() {
-    // Escucha los deep links entrantes usando uriLinkStream
     _sub = uriLinkStream.listen((Uri? uri) {
       if (uri != null) {
         final String? sessionToken = uri.queryParameters['session_token'];
@@ -38,7 +37,9 @@ class _LoginPageState extends State<LoginPage> {
               .validateToken(sessionToken)
               .then((bool isValid) {
             if (isValid) {
-              Navigator.of(context).pushReplacementNamed('/home');
+              setState(() {
+                _isLoggedIn = true; // Actualiza el estado a logueado
+              });
             } else {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
@@ -77,18 +78,43 @@ void redirectToLogin() async {
 }
 
 
+  void _logout() {
+    Provider.of<UserSession>(context, listen: false).logout();
+    setState(() {
+      _isLoggedIn = false; // Actualiza el estado a no logueado
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    final userSession = Provider.of<UserSession>(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Login'),
+        title: const Text('Mi Membresía'),
       ),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: redirectToLogin,
-          child: const Text('Iniciar Sesión'),
-        ),
-      ),
+      body: _isLoggedIn
+          ? Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text('Token: ${userSession.token ?? "No disponible"}'),
+                  Text('Nombre: ${userSession.userName ?? "No disponible"}'),
+                  Text('Correo Electrónico: ${userSession.userEmail ?? "No disponible"}'),
+                  Text('Teléfono: ${userSession.userPhone ?? "No disponible"}'),
+                  ElevatedButton(
+                    onPressed: _logout,
+                    child: const Text('Cerrar Sesión'),
+                  ),
+                ],
+              ),
+            )
+          : Center(
+              child: ElevatedButton(
+                onPressed: redirectToLogin,
+                child: const Text('Iniciar Sesión'),
+              ),
+            ),
     );
   }
 }

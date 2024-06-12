@@ -1,5 +1,5 @@
-import 'package:club_easy_hotel/screens/web_view_register.dart';
 import 'package:flutter/material.dart';
+
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -35,26 +35,20 @@ class HomePage extends StatelessWidget {
                     textAlign: TextAlign.start,
                   ),
                 ),
-                ElevatedButton(
+                 ElevatedButton(
                   onPressed: () {
-                    Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => const WebViewRegister()),
-                              );                  },
+                    Navigator.pushNamed(context, '/login'); // Navega a LoginPage
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Theme.of(context).colorScheme.primary, // Color de fondo del botón
                   ),
                   child: Text(
-                    'Registrate',
+                    'Comprar Membresia',
                     style: TextStyle(fontSize: 18, color: Theme.of(context).textTheme.bodyLarge?.color),
                   ),
                 ),
                 TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => const WebViewRegister()),
-                              );                  },
+                  onPressed: () { /* logica para este texto */},
                   child: const Text(
                     '¿Ya Estas Registrado? Consulta',
                     style: TextStyle(color: Colors.white70),

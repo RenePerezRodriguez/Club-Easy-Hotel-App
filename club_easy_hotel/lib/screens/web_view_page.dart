@@ -9,7 +9,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      title: 'Reservas Club Easy Hotel',
+      title: 'Internacional',
       home: WebViewPage(),
     );
   }
@@ -54,7 +54,7 @@ class _WebViewPageState extends State<WebViewPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Reservas Club Easy Hotel'),
+        title: const Text('Internacional'),
       ),
       body: WebViewWidget(controller: _controller),
     );

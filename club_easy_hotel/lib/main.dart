@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Club Easy Hotel',
       routes: {
-        '/home': (context) => const HomePage(),
+        '/home': (context) => const MyHomePage(),
         '/hotelList': (context) => const HotelListPage(),
         '/webView': (context) => const WebViewPage(),
         '/login': (context) => const LoginPage(),
@@ -103,11 +103,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
   @override
   void initState() {
     super.initState();
     _requestLocationPermission();
   }
+
 
   void _requestLocationPermission() async {
     var status = await Permission.location.status;
@@ -153,6 +155,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final List<Widget> _widgetOptions = <Widget>[
     const HomePage(),
     const HotelListPage(),
+    const LoginPage(),
     // Añade tus otras pantallas aquí
   ];
 
@@ -164,6 +167,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+
+    // Usa Provider para obtener el token de la sesión del usuario
+    final userSession = Provider.of<UserSession>(context);
+    final String? token = userSession.token; // Obtiene el token de la sesión
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black, // Color de fondo del AppBar
@@ -173,22 +181,25 @@ class _MyHomePageState extends State<MyHomePage> {
             // Acción al presionar el ícono
           },
         ),
-        title: const Text(
-          'Club Easy Hotel',
-          style: TextStyle(
-            color: Colors.white, // Color del título
+        title: Text(
+          token ?? 'Club Easy Hotel', // Muestra el token si está disponible, de lo contrario muestra el título por defecto
+          style: const TextStyle(
+            color: Colors.white,
           ),
         ),
         actions: <Widget>[
+          if (token == null) // Si no hay un token, muestra el botón de login
           ElevatedButton(
             onPressed: () {
-              Navigator.pushNamed(context, '/login'); // Navega a LoginPage
-            },
+                    Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => const WebViewPage()),
+                              );                  },
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFFD3A75B), // Color de fondo del botón (dorado)
             ),
             child: const Text(
-              'Login',
+              'Internacional',
               style: TextStyle(
                 color: Colors.white, // Color del texto del botón
               ),
@@ -209,6 +220,10 @@ class _MyHomePageState extends State<MyHomePage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.hotel),
             label: 'Hoteles',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Perfil de usuario',
           ),
           // Añade más ítems aquí para tus otras pantallas
         ],
