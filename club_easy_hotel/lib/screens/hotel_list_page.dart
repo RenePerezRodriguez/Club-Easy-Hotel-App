@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:club_easy_hotel/api_service.dart'; // Asegúrate de usar la ruta correcta a api_service.dart
+import 'package:club_easy_hotel/services/api_service.dart'; // Asegúrate de usar la ruta correcta a api_service.dart
 import 'package:url_launcher/url_launcher.dart';
 
 

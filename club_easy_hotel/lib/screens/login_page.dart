@@ -1,4 +1,4 @@
-import 'package:club_easy_hotel/user_session.dart';
+import 'package:club_easy_hotel/models/user_session.dart';
 import 'package:flutter/material.dart';
 import 'package:uni_links/uni_links.dart';
 import 'package:provider/provider.dart';
@@ -15,6 +15,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   StreamSubscription? _sub;
   bool _isLoggedIn = false; // Añade una variable para rastrear el estado de inicio de sesión
+  Timer? _timer; // Añade un Timer para la redirección
 
   @override
   void initState() {
@@ -25,6 +26,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void dispose() {
     _sub?.cancel();
+    _timer?.cancel(); // Cancela el timer si está activo
     super.dispose();
   }
 
@@ -39,6 +41,7 @@ class _LoginPageState extends State<LoginPage> {
             if (isValid) {
               setState(() {
                 _isLoggedIn = true; // Actualiza el estado a logueado
+                _handleLoginSuccess(); // Llama al método para manejar el éxito del inicio de sesión
               });
             } else {
               ScaffoldMessenger.of(context).showSnackBar(
@@ -59,24 +62,30 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
- // Método para redirigir al usuario a la página de login del servidor
-void redirectToLogin() async {
-  const String redirectUrl = 'myapp://login_success';
-  final String encodedRedirectUrl = Uri.encodeFull(redirectUrl);
-  final String loginUrl = 'http://admin2.easyhotel.com.bo/sessions/new?redirect_to=$encodedRedirectUrl';
-
-  if (await canLaunch(loginUrl)) {
-    await launch(loginUrl);
-  } else {
-    // Manejo de errores si no se puede abrir la URL
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('No se pudo realizar la redirección para el login.'),
-      ),
-    );
+  void _handleLoginSuccess() {
+    // Redirige al usuario a la página de inicio después de 2 segundos
+    _timer = Timer(const Duration(seconds: 2), () {
+      Navigator.of(context).pushReplacementNamed('/home'); // Asegúrate de que la ruta '/home' esté definida en tu MaterialApp
+    });
   }
-}
 
+  // Método para redirigir al usuario a la página de login del servidor
+  void redirectToLogin() async {
+    const String redirectUrl = 'myapp://login_success';
+    final String encodedRedirectUrl = Uri.encodeFull(redirectUrl);
+    final String loginUrl = 'http://admin2.easyhotel.com.bo/sessions/new?redirect_to=$encodedRedirectUrl';
+
+    if (await canLaunch(loginUrl)) {
+      await launch(loginUrl);
+    } else {
+      // Manejo de errores si no se puede abrir la URL
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('No se pudo realizar la redirección para el login.'),
+        ),
+      );
+    }
+  }
 
   void _logout() {
     Provider.of<UserSession>(context, listen: false).logout();
