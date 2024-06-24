@@ -14,8 +14,8 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   StreamSubscription? _sub;
-  bool _isLoggedIn = false; // Añade una variable para rastrear el estado de inicio de sesión
-  Timer? _timer; // Añade un Timer para la redirección
+  Timer? _timer;
+  static bool _hasRedirected = false; // Variable estática para rastrear la redirección
 
   @override
   void initState() {
@@ -26,7 +26,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void dispose() {
     _sub?.cancel();
-    _timer?.cancel(); // Cancela el timer si está activo
+    _timer?.cancel();
     super.dispose();
   }
 
@@ -40,7 +40,6 @@ class _LoginPageState extends State<LoginPage> {
               .then((bool isValid) {
             if (isValid) {
               setState(() {
-                _isLoggedIn = true; // Actualiza el estado a logueado
                 _handleLoginSuccess(); // Llama al método para manejar el éxito del inicio de sesión
               });
             } else {
@@ -63,10 +62,12 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _handleLoginSuccess() {
-    // Redirige al usuario a la página de inicio después de 2 segundos
-    _timer = Timer(const Duration(seconds: 2), () {
-      Navigator.of(context).pushReplacementNamed('/home'); // Asegúrate de que la ruta '/home' esté definida en tu MaterialApp
-    });
+    if (!_hasRedirected) { // Verifica si ya se ha redirigido al usuario
+      _timer = Timer(const Duration(seconds: 2), () {
+        Navigator.of(context).pushReplacementNamed('/home');
+        _hasRedirected = true; // Marca que se ha realizado la redirección
+      });
+    }
   }
 
   // Método para redirigir al usuario a la página de login del servidor
@@ -89,19 +90,26 @@ class _LoginPageState extends State<LoginPage> {
 
   void _logout() {
     Provider.of<UserSession>(context, listen: false).logout();
+    _timer?.cancel(); // Asegúrate de cancelar el timer al cerrar sesión
     setState(() {
-      _isLoggedIn = false; // Actualiza el estado a no logueado
+      _timer = null; // Restablece el timer a null
     });
   }
 
   @override
   Widget build(BuildContext context) {
     final userSession = Provider.of<UserSession>(context);
+    final bool isLoggedIn = userSession.token != null;
+
+    if (isLoggedIn && !_hasRedirected) {
+      _handleLoginSuccess();
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Mi Membresía'),
       ),
-      body: _isLoggedIn
+      body: isLoggedIn
           ? Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(

@@ -65,7 +65,6 @@ class _HotelListPageState extends State<HotelListPage> {
                             'Santa-Cruz',
                             'Tarija',
                           ]
-                            // Añade todos los departamentos aquí
                 .map<DropdownMenuItem<String>>((String value) {
               return DropdownMenuItem<String>(
                 value: value,
@@ -94,7 +93,7 @@ class _HotelListPageState extends State<HotelListPage> {
                     children: [
                       SizedBox(
                         width: 80,
-                        height: 80, // Asegúrate de proporcionar un tamaño definido
+                        height: 80, 
                         child: Image.network(
                           hotel.thumbnail,
                           fit: BoxFit.cover,
@@ -123,7 +122,7 @@ class _HotelListPageState extends State<HotelListPage> {
                                   style: const TextStyle(
                                     color: Colors.grey,
                                     decoration: TextDecoration.lineThrough,
-                                    fontSize: 14, // Tamaño más pequeño para el precio tachado
+                                    fontSize: 14, 
                                   ),
                                 ),
                               ),
@@ -132,19 +131,19 @@ class _HotelListPageState extends State<HotelListPage> {
                                 child: Text(
                                   '${hotel.tarifaEasy} ${hotel.moneda}',
                                   style: TextStyle(
-                                    color: Theme.of(context).colorScheme.secondary, // Color secundario del tema
+                                    color: Theme.of(context).colorScheme.secondary, 
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 18, // Tamaño más grande para el precio destacado
+                                    fontSize: 18, 
                                   ),
                                 ),
                               ),
                               const Align(
                                 alignment: Alignment.centerRight,
                                 child: Text(
-                                  'Tarifa Easy Hotel', // Texto adicional
+                                  'Tarifa Easy Hotel', 
                                   style: TextStyle(
                                     color: Colors.grey,
-                                    fontSize: 12, // Tamaño más pequeño para este texto
+                                    fontSize: 12, 
                                   ),
                                 ),
                               ),                            ],

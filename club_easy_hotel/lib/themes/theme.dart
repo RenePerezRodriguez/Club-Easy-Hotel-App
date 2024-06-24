@@ -22,6 +22,7 @@ final ThemeData darkTheme = ThemeData(
   brightness: Brightness.dark,
   primaryColor: const Color(0xFFD3A75B),
   scaffoldBackgroundColor: const Color(0xFF1A1A1A),
+  
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
     backgroundColor: const Color(0xFF1A1A1A),
     selectedItemColor: const Color(0xFFD3A75B),
