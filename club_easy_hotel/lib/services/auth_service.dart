@@ -14,10 +14,12 @@ class AuthService {
         final SharedPreferences prefs = await SharedPreferences.getInstance();
         // Guarda los datos del usuario en las preferencias compartidas
         await prefs.setInt('userId', jsonResponse['id']);
+        await prefs.setString('userImage', jsonResponse['image']);
         await prefs.setString('userName', jsonResponse['name']);
+        await prefs.setString('clientDni', jsonResponse['dni']);
         await prefs.setString('userEmail', jsonResponse['email']);
         await prefs.setString('userPhone', jsonResponse['phone']);
-        await prefs.setString('userToken', token); // Guardar el token también puede ser útil
+        await prefs.setString('userToken', token);
         return true; // Devuelve true si el token es válido
       } else {
         // Token es incorrecto, manejar el error
@@ -35,7 +37,9 @@ class AuthService {
   Future<void> logout() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.remove('userId');
+    await prefs.remove('userImage');
     await prefs.remove('userName');
+    await prefs.remove('clientDni');
     await prefs.remove('userEmail');
     await prefs.remove('userPhone');
     await prefs.remove('userToken');

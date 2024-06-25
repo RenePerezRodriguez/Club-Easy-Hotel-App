@@ -1,31 +1,32 @@
-// custom_bottom_navigation_bar.dart
 import 'package:flutter/material.dart';
 
 class CustomBottomNavigationBar extends StatelessWidget {
   final int selectedIndex;
   final Function(int) onItemTapped;
+  final bool isUserLoggedIn; // Añade este parámetro
 
   const CustomBottomNavigationBar({
     super.key,
     required this.selectedIndex,
     required this.onItemTapped,
+    required this.isUserLoggedIn, // Añade este parámetro
   });
 
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-      items: const <BottomNavigationBarItem>[
-        BottomNavigationBarItem(
+      items: <BottomNavigationBarItem>[
+        const BottomNavigationBarItem(
           icon: Icon(Icons.home),
           label: 'Inicio',
         ),
-        BottomNavigationBarItem(
+        const BottomNavigationBarItem(
           icon: Icon(Icons.hotel),
           label: 'Hoteles',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.person),
-          label: 'Perfil de usuario',
+          icon: const Icon(Icons.person),
+          label: isUserLoggedIn ? 'Perfil de usuario' : 'Iniciar Sesión', // Cambia la etiqueta según el estado de la sesión
         ),
         // Añade más ítems aquí para tus otras pantallas
       ],

@@ -1,28 +1,70 @@
 import 'package:club_easy_hotel/models/user_session.dart';
 import 'package:flutter/material.dart';
-import 'package:club_easy_hotel/services/api_service.dart'; // Asegúrate de usar la ruta correcta a api_service.dart
+import 'package:club_easy_hotel/services/api_service.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+class SearchWidget extends StatefulWidget {
+  final Function(List<Hotel>) onSearchResults;
 
-class HotelListPage extends StatefulWidget {
-  const HotelListPage({super.key});
+  const SearchWidget({super.key, required this.onSearchResults});
 
   @override
-  _HotelListPageState createState() => _HotelListPageState();
+  _SearchWidgetState createState() => _SearchWidgetState();
 }
 
-class _HotelListPageState extends State<HotelListPage> {
-  late Future<List<Hotel>> futureHotels;
-  String? selectedDepartment;
+class _SearchWidgetState extends State<SearchWidget> {
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    futureHotels = fetchHotels();
   }
 
-  void sendMessageToWhatsApp(BuildContext context, String phoneNumber) async {
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  void _searchHotels(String query) async {
+    if (query.isEmpty) {
+      return;
+    }
+    try {
+      List<Hotel> hotels = await fetchHotels();
+      List<Hotel> searchResults = hotels.where((hotel) {
+        return hotel.title.toLowerCase().contains(query.toLowerCase());
+      }).toList();
+
+      widget.onSearchResults(searchResults);
+    } catch (e) {
+      print('Error al buscar hoteles: $e');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      controller: _searchController,
+      decoration: InputDecoration(
+        filled: true,
+        fillColor: const Color.fromARGB(255, 60, 59, 59),
+        hintText: 'Busca tu hotel',
+        suffixIcon: IconButton(
+          icon: const Icon(Icons.search),
+          onPressed: () => _searchHotels(_searchController.text),
+        ),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(30),
+          borderSide: BorderSide.none,
+        ),
+      ),
+    );
+  }
+}
+
+void sendMessageToWhatsApp(BuildContext context, String phoneNumber) async {
     const String message = "Hola le hablo desde la app de Club Easy Hotel, me gustaría obtener más información sobre el hotel.";
     final Uri whatsappUri = Uri.parse("whatsapp://send?phone=+$phoneNumber&text=${Uri.encodeFull(message)}");
     final Uri whatsappWebUri = Uri.parse("https://wa.me/$phoneNumber/?text=${Uri.encodeFull(message)}");
@@ -40,63 +82,31 @@ class _HotelListPageState extends State<HotelListPage> {
     }
   }
 
+class SearchResultsPage extends StatelessWidget {
+  final List<Hotel> searchResults;
+
+  const SearchResultsPage({super.key, required this.searchResults});
 
   @override
   Widget build(BuildContext context) {
     final isLoggedIn = Provider.of<UserSession>(context).token != null;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Departamento'),
-        actions: <Widget>[
-          DropdownButton<String>(
-            value: selectedDepartment,
-            onChanged: (String? newValue) {
-              setState(() {
-                selectedDepartment = newValue;
-                futureHotels = fetchHotelsByDepartment(selectedDepartment!);
-              });
-            },
-            items: <String>[
-                            'Beni',
-                            'Chuquisaca',
-                            'Cochabamba',
-                            'La-Paz',
-                            'Oruro',
-                            'Pando',
-                            'Potosí',
-                            'Santa-Cruz',
-                            'Tarija',
-                          ]
-                .map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value),
-              );
-            }).toList(),
-          ),
-        ],
+        title: const Text('Resultados de Búsqueda'),
       ),
-      body: FutureBuilder<List<Hotel>>(
-        future: futureHotels,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return const Center(child: Text('Ocurrió un error al cargar los hoteles.'));
-          } else if (snapshot.hasData) {
-             return ListView.builder(
-                      itemCount: snapshot.data!.length,
-                      itemBuilder: (context, index) {
-                        Hotel hotel = snapshot.data![index];
-                        return Card(
-                          margin: const EdgeInsets.all(10),
-                          elevation: 2,
-                          child: Padding(
-                            padding: const EdgeInsets.all(10),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Image.network(
+      body: ListView.builder(
+        itemCount: searchResults.length,
+        itemBuilder: (context, index) {
+          final hotel = searchResults[index];
+          return Card(
+            margin: const EdgeInsets.all(10),
+            elevation: 2,
+            child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Image.network(
                                   hotel.thumbnail,
                                   fit: BoxFit.cover, 
                                   width: double.infinity, 
@@ -186,19 +196,13 @@ class _HotelListPageState extends State<HotelListPage> {
                                       fontStyle: FontStyle.italic,
                                     ),
                                   ),
-                                ],
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    );
-
-          } else {
-            return const Center(child: Text('No hay datos disponibles.'));
-          }
-        },
-      ),
+                        ],
+                      ],
+                    ),
+                  ),
+                );
+              },
+            )
     );
   }
 }

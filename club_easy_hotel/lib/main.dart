@@ -72,6 +72,7 @@ class MyHomePageState extends State<MyHomePage> {
       bottomNavigationBar: CustomBottomNavigationBar(
         selectedIndex: _selectedIndex,
         onItemTapped: _onItemTapped,
+        isUserLoggedIn: Provider.of<UserSession>(context).token != null, // Esto verificará si el token de sesión está presente
       ),
     );
   }

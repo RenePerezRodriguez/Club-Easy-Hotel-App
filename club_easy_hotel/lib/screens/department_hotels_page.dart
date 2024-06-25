@@ -1,26 +1,13 @@
-import 'package:club_easy_hotel/models/user_session.dart';
 import 'package:flutter/material.dart';
-import 'package:club_easy_hotel/services/api_service.dart'; // Asegúrate de usar la ruta correcta a api_service.dart
-import 'package:provider/provider.dart';
+import 'package:club_easy_hotel/services/api_service.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:provider/provider.dart';
+import 'package:club_easy_hotel/models/user_session.dart';
 
+class DepartmentHotelsPage extends StatelessWidget {
+  final String department;
 
-class HotelListPage extends StatefulWidget {
-  const HotelListPage({super.key});
-
-  @override
-  _HotelListPageState createState() => _HotelListPageState();
-}
-
-class _HotelListPageState extends State<HotelListPage> {
-  late Future<List<Hotel>> futureHotels;
-  String? selectedDepartment;
-
-  @override
-  void initState() {
-    super.initState();
-    futureHotels = fetchHotels();
-  }
+  const DepartmentHotelsPage({super.key, required this.department});
 
   void sendMessageToWhatsApp(BuildContext context, String phoneNumber) async {
     const String message = "Hola le hablo desde la app de Club Easy Hotel, me gustaría obtener más información sobre el hotel.";
@@ -40,51 +27,23 @@ class _HotelListPageState extends State<HotelListPage> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     final isLoggedIn = Provider.of<UserSession>(context).token != null;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Departamento'),
-        actions: <Widget>[
-          DropdownButton<String>(
-            value: selectedDepartment,
-            onChanged: (String? newValue) {
-              setState(() {
-                selectedDepartment = newValue;
-                futureHotels = fetchHotelsByDepartment(selectedDepartment!);
-              });
-            },
-            items: <String>[
-                            'Beni',
-                            'Chuquisaca',
-                            'Cochabamba',
-                            'La-Paz',
-                            'Oruro',
-                            'Pando',
-                            'Potosí',
-                            'Santa-Cruz',
-                            'Tarija',
-                          ]
-                .map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value),
-              );
-            }).toList(),
-          ),
-        ],
+        title: Text('Hoteles en $department'),
       ),
       body: FutureBuilder<List<Hotel>>(
-        future: futureHotels,
+        future: fetchHotelsByDepartment(department),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return const Center(child: Text('Ocurrió un error al cargar los hoteles.'));
+            return Center(child: Text('Error: ${snapshot.error}'));
           } else if (snapshot.hasData) {
-             return ListView.builder(
+            return ListView.builder(
                       itemCount: snapshot.data!.length,
                       itemBuilder: (context, index) {
                         Hotel hotel = snapshot.data![index];
@@ -193,9 +152,8 @@ class _HotelListPageState extends State<HotelListPage> {
                         );
                       },
                     );
-
           } else {
-            return const Center(child: Text('No hay datos disponibles.'));
+            return Center(child: Text('No hay hoteles disponibles para el departamento $department'));
           }
         },
       ),
