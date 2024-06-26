@@ -56,23 +56,23 @@ class HomePage extends StatelessWidget {
 
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView( // Envuelve todo en un SingleChildScrollView
+        child: SingleChildScrollView(
           child: Column(
             children: [
             Container(
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: NetworkImage('https://easyhotel.com.bo/wp-content/uploads/2024/03/sasha-kaunas-TAgGZWz6Qg8-unsplash-scaled.jpg'),
+                  image: const NetworkImage('https://easyhotel.com.bo/wp-content/uploads/2024/03/sasha-kaunas-TAgGZWz6Qg8-unsplash-scaled.jpg'),
                   fit: BoxFit.cover,
                   colorFilter: ColorFilter.mode(
-                    Colors.black.withOpacity(0.5), // Ajusta la opacidad aquí
+                    Colors.black.withOpacity(0.5),
                     BlendMode.darken,
                   ),
                 ),
               ),
               child: Padding(
-                padding: const EdgeInsets.all(16.0), // Añade un padding para el contenido
+                padding: const EdgeInsets.all(16.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -81,14 +81,31 @@ class HomePage extends StatelessWidget {
                       width: 200,
                     ),
                 const SizedBox(height: 10),
-                const Text(
-                  '¡Bienvenido, invitado!',
-                  style: TextStyle(
-                    fontSize: 25,
-                    color: Colors.white,
-                  ),
+                RichText(
                   textAlign: TextAlign.center,
+                  text: TextSpan(
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.white,
+                    ),
+                    children: [
+                      TextSpan(
+                        text: '¡Bienvenido, ',
+                      ),
+                      TextSpan(
+                        text: '${name ?? 'invitado'}',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).primaryColor, // Usa el color primario del tema
+                        ),
+                      ),
+                      TextSpan(
+                        text: '!',
+                      ),
+                    ],
+                  ),
                 ),
+
                 const SizedBox(height: 10),
                 const Text(
                   'Las mejores tarifas en los mejores hoteles del pais.',
@@ -106,13 +123,13 @@ class HomePage extends StatelessWidget {
                       // Reemplaza con el enlace al que quieres que lleve el botón
                       launchUrl(Uri.parse('http://admin2.easyhotel.com.bo//sessions/buy_card?redirect_to='));
                     },
-                    child: const Text('Comprar membresía'),
                     style: OutlinedButton.styleFrom(
                       side: BorderSide(color: Theme.of(context).primaryColor),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10), 
                       ),
                     ),
+                    child: const Text('Comprar membresía'),
                   ),
                 ],
                 const SizedBox(height: 20),
@@ -162,7 +179,7 @@ class HomePage extends StatelessWidget {
             // Lista de departamentos
               GridView.builder(
                 shrinkWrap: true, // Importante para que funcione dentro de SingleChildScrollView
-                physics: NeverScrollableScrollPhysics(), // Para evitar el desplazamiento propio de la GridView
+                physics: const NeverScrollableScrollPhysics(), // Para evitar el desplazamiento propio de la GridView
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 1,
                   crossAxisSpacing: 10,
@@ -213,10 +230,10 @@ class HomePage extends StatelessWidget {
                             children: [
                               Text(
                                 departments[index]['name']!,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 24,
+                                  fontSize: 50,
                                 ),
                               ),
                               OutlinedButton(
@@ -228,13 +245,13 @@ class HomePage extends StatelessWidget {
                                     ),
                                   );
                                 },
-                                child: Text('Ver hoteles'),
                                 style: OutlinedButton.styleFrom(
                                   side: BorderSide(color: Theme.of(context).primaryColor),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10), 
                                   ),
                                 ),
+                                child: const Text('Ver hoteles'),
                               ),
                             ],
                           ),

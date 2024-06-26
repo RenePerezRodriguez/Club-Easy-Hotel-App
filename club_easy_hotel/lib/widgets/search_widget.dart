@@ -51,7 +51,7 @@ Widget build(BuildContext context) {
       controller: _searchController,
       decoration: InputDecoration(
         filled: true,
-        fillColor: Color.fromARGB(0, 60, 59, 59), // Fondo transparente
+        fillColor: const Color.fromARGB(0, 60, 59, 59), // Fondo transparente
         hintText: 'Buscar hoteles',
         suffixIcon: IconButton(
           icon: const Icon(Icons.search),
@@ -59,15 +59,15 @@ Widget build(BuildContext context) {
         ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(color: Colors.white), // Borde blanco
+          borderSide: const BorderSide(color: Colors.white), // Borde blanco
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(color: Colors.white), // Borde blanco cuando el TextField no está enfocado
+          borderSide: const BorderSide(color: Colors.white), // Borde blanco cuando el TextField no está enfocado
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(color: Colors.white), // Borde blanco cuando el TextField está enfocado
+          borderSide: const BorderSide(color: Colors.white), // Borde blanco cuando el TextField está enfocado
         ),
       ),
     ),
