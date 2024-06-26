@@ -117,7 +117,7 @@ class HomePage extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 10),
-                if (isLoggedIn) ...[
+                if (!isLoggedIn) ...[
                   OutlinedButton(
                     onPressed: () {
                       // Reemplaza con el enlace al que quieres que lleve el botón
