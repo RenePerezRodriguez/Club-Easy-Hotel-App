@@ -87,53 +87,64 @@ class DepartmentHotelsPage extends StatelessWidget {
                                   ),
                                 ),
                                 if (hotel.precioRack.isNotEmpty && hotel.moneda.isNotEmpty) ...[
-                                  Text(
+                                Align(
+                                  alignment: Alignment.centerRight,
+                                  child: Text(
                                     'Precio rack: ${hotel.precioRack} ${hotel.moneda}',
-                                    textAlign: TextAlign.center,
                                     style: const TextStyle(
                                       color: Colors.grey,
                                       decoration: TextDecoration.lineThrough,
                                       fontSize: 14,
                                     ),
                                   ),
-                                ],
-                                if (hotel.tarifaEasy.isNotEmpty && hotel.moneda.isNotEmpty) ...[
-                                  Text(
+                                ),
+                              ],
+                              if (hotel.tarifaEasy.isNotEmpty && hotel.moneda.isNotEmpty) ...[
+                                Align(
+                                  alignment: Alignment.centerRight, // Alinea el texto a la derecha
+                                  child: Text(
                                     'Precio: ${hotel.tarifaEasy} ${hotel.moneda} por noche',
-                                    textAlign: TextAlign.center,
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color: Theme.of(context).primaryColor,
                                       fontSize: 16,
                                     ),
                                   ),
-                                ],
+                                ),
+                              ],
                                 const SizedBox(height: 10),
                                 if (!isLoggedIn) ...[
-                                  const Text(
-                                    'Inicia sesión o compra una membresía para reservar con descuento',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      color: Colors.red,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      Provider.of<UserSession>(context, listen: false).redirectToLogin(context);
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                      foregroundColor: Theme.of(context).primaryColor, 
-                                      side: BorderSide(color: Theme.of(context).primaryColor, width: 2),
-                                    ),
-                                    child: const Text('Iniciar sesión / Comprar membresía'),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      OutlinedButton(
+                                        onPressed: () {
+                                          // Acción para el botón de reservar
+                                          Provider.of<UserSession>(context, listen: false).redirectToLogin(context);
+                                        },
+                                        style: OutlinedButton.styleFrom(
+                                          foregroundColor: Theme.of(context).primaryColor,
+                                          side: BorderSide(color: Theme.of(context).primaryColor, width: 2),
+                                        ),
+                                        child: const Text('Reservar'),
+                                      ),
+                                      OutlinedButton(
+                                        onPressed: () {
+                                        // Reemplaza con el enlace al que quieres que lleve el botón
+                                        launchUrl(Uri.parse('http://admin2.easyhotel.com.bo//sessions/buy_card?redirect_to='));                                        },
+                                        style: OutlinedButton.styleFrom(
+                                          foregroundColor: Theme.of(context).primaryColor,
+                                          side: BorderSide(color: Theme.of(context).primaryColor, width: 2),
+                                        ),
+                                        child: const Text('Comprar membresía'),
+                                      ),
+                                    ],
                                   ),
                                 ] else if (hotel.whatsapp.isNotEmpty) ...[
-                                  ElevatedButton(
+                                  OutlinedButton(
                                     onPressed: () => sendMessageToWhatsApp(context, hotel.whatsapp),
                                     style: OutlinedButton.styleFrom(
-                                      foregroundColor: Theme.of(context).primaryColor, 
-                                      backgroundColor: Colors.white,
+                                      foregroundColor: Theme.of(context).primaryColor,
                                       side: BorderSide(color: Theme.of(context).primaryColor, width: 2),
                                     ),
                                     child: const Text('Reservar'),

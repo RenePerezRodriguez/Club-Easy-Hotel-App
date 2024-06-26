@@ -20,17 +20,17 @@ final ThemeData lightTheme = ThemeData(
 
 final ThemeData darkTheme = ThemeData(
   brightness: Brightness.dark,
-  primaryColor: const Color(0xFFD3A75B),
+  primaryColor: const Color(0xFFd3a75c),
   scaffoldBackgroundColor: const Color(0xFF1A1A1A),
   
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
     backgroundColor: const Color(0xFF1A1A1A),
-    selectedItemColor: const Color(0xFFD3A75B),
-    unselectedItemColor: const Color(0xFFD3A75B).withOpacity(0.5),
+    selectedItemColor: const Color(0xFFd3a75c),
+    unselectedItemColor: const Color(0xFFd3a75c).withOpacity(0.5),
   ),
   colorScheme: const ColorScheme.dark().copyWith(
-    primary: const Color(0xFFD3A75B),
-    secondary: const Color(0xFFD3A75B),
+    primary: const Color(0xFFd3a75c),
+    secondary: const Color(0xFFd3a75c),
   ),
   // Otros componentes de la interfaz de usuario
   // ...
