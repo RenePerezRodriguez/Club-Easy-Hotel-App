@@ -85,7 +85,7 @@ class HomePage extends StatelessWidget {
                   textAlign: TextAlign.center,
                   text: TextSpan(
                     style: TextStyle(
-                      fontSize: 20,
+                      fontSize: 0, // make it invisible
                       color: Colors.white,
                     ),
                     children: [
@@ -106,18 +106,18 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
 
-                const SizedBox(height: 10),
+                const SizedBox(height: 20),
                 const Text(
-                  'Las mejores tarifas en los mejores hoteles del pais.',
+                  'Las mejores tarifas en los mejores hoteles de Bolivia y el mundo.',
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 20,
+                    fontSize: 25,
                     fontWeight: FontWeight.bold,
                   ),
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 10),
-                if (!isLoggedIn) ...[
+                const SizedBox(height: 20),
+                if (isLoggedIn && false) ...[ // hide temporarily
                   OutlinedButton(
                     onPressed: () {
                       // Reemplaza con el enlace al que quieres que lleve el botón
@@ -126,13 +126,13 @@ class HomePage extends StatelessWidget {
                     style: OutlinedButton.styleFrom(
                       side: BorderSide(color: Theme.of(context).primaryColor),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10), 
+                        borderRadius: BorderRadius.circular(10),
                       ),
                     ),
                     child: const Text('Comprar membresía'),
                   ),
                 ],
-                const SizedBox(height: 20),
+                const SizedBox(height: 30),
                 SearchWidget(
                   onSearchResults: (results) {
                     Navigator.push(
@@ -218,7 +218,7 @@ class HomePage extends StatelessWidget {
                               end: Alignment.topCenter,
                               colors: [
                                 Colors.black.withOpacity(0.8),
-                                Colors.transparent, 
+                                Colors.transparent,
                               ],
                             ),
                           ),
@@ -248,7 +248,7 @@ class HomePage extends StatelessWidget {
                                 style: OutlinedButton.styleFrom(
                                   side: BorderSide(color: Theme.of(context).primaryColor),
                                   shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10), 
+                                    borderRadius: BorderRadius.circular(10),
                                   ),
                                 ),
                                 child: const Text('Ver hoteles'),

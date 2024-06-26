@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:uni_links/uni_links.dart';
 import 'package:provider/provider.dart';
 import 'dart:async';
+import 'package:url_launcher/url_launcher.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -64,7 +65,7 @@ class _LoginPageState extends State<LoginPage> {
     /*if (!_hasRedirected) {
       _timer = Timer(const Duration(seconds: 3), () {
         Navigator.of(context).pushReplacementNamed('/home');
-        _hasRedirected = true; 
+        _hasRedirected = true;
       });
     }*/
   }
@@ -88,7 +89,7 @@ class _LoginPageState extends State<LoginPage> {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       border: Border.all(
-                        color: Theme.of(context).primaryColor, 
+                        color: Theme.of(context).primaryColor,
                         width: 2,
                       ),
                     ),
@@ -166,7 +167,7 @@ class _LoginPageState extends State<LoginPage> {
                       'Cerrar Sesión',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: Colors.white, 
+                        color: Colors.white,
                       ),
                     ),
                   ),
@@ -186,17 +187,35 @@ class _LoginPageState extends State<LoginPage> {
                   const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () {
-                      Provider.of<UserSession>(context, listen: false).redirectToLogin(context);
+                      launchUrl(Uri.parse('http://admin2.easyhotel.com.bo//sessions/buy_card?redirect_to='));
                     },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Theme.of(context).primaryColor,
+                    style: OutlinedButton.styleFrom(
+                      side: BorderSide(color: Theme.of(context).primaryColor),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.0),
+                        borderRadius: BorderRadius.circular(10),
                       ),
-                      padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
                     ),
                     child: const Text(
-                      'Iniciar Sesión',
+                      'Comprar Membresía',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold, // Texto en negrita
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () {
+                      Provider.of<UserSession>(context, listen: false).redirectToLogin(context);
+                    },
+                    style: OutlinedButton.styleFrom(
+                      side: BorderSide(color: Theme.of(context).primaryColor),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    child: const Text(
+                      'Acceder a mi cuenta',
                       style: TextStyle(
                         fontWeight: FontWeight.bold, // Texto en negrita
                         color: Colors.white,

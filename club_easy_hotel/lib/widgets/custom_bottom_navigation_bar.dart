@@ -26,7 +26,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
         ),
         BottomNavigationBarItem(
           icon: const Icon(Icons.person),
-          label: isUserLoggedIn ? 'Perfil de usuario' : 'Iniciar Sesión', // Cambia la etiqueta según el estado de la sesión
+          label: isUserLoggedIn ? 'Membresía' : 'Membresía', // Cambia la etiqueta según el estado de la sesión
         ),
         // Añade más ítems aquí para tus otras pantallas
       ],
