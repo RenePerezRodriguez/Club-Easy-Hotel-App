@@ -1,6 +1,6 @@
 import 'package:club_easy_hotel/models/user_session.dart';
 import 'package:flutter/material.dart';
-import 'package:club_easy_hotel/services/api_service.dart'; 
+import 'package:club_easy_hotel/services/api_service.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -23,7 +23,7 @@ class _HotelListPageState extends State<HotelListPage> {
   }
 
   void sendMessageToWhatsApp(BuildContext context, String phoneNumber) async {
-    const String message = "Hola le hablo desde la app de Club Easy Hotel, me gustaría obtener más información sobre el hotel.";
+    const String message = "Hola, soy miembro del Club EasyHotel y me encantaría realizar una reserva en su hotel.";
     final Uri whatsappUri = Uri.parse("whatsapp://send?phone=+$phoneNumber&text=${Uri.encodeFull(message)}");
     final Uri whatsappWebUri = Uri.parse("https://wa.me/$phoneNumber/?text=${Uri.encodeFull(message)}");
 
@@ -98,9 +98,9 @@ class _HotelListPageState extends State<HotelListPage> {
                               children: [
                                 Image.network(
                                   hotel.thumbnail,
-                                  fit: BoxFit.cover, 
-                                  width: double.infinity, 
-                                  height: 250, 
+                                  fit: BoxFit.cover,
+                                  width: double.infinity,
+                                  height: 250,
                                 ),
                                 const SizedBox(height: 8),
                                 Text(
