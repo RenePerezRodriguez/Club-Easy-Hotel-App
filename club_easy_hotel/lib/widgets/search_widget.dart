@@ -52,7 +52,7 @@ Widget build(BuildContext context) {
       decoration: InputDecoration(
         filled: true,
         fillColor: const Color.fromARGB(0, 60, 59, 59), // Fondo transparente
-        hintText: 'Buscar hoteles',
+        hintText: 'Buscar hoteles...',
         suffixIcon: IconButton(
           icon: const Icon(Icons.search),
           onPressed: () => _searchHotels(_searchController.text),
@@ -121,9 +121,9 @@ class SearchResultsPage extends StatelessWidget {
                 children: [
                   Image.network(
                                   hotel.thumbnail,
-                                  fit: BoxFit.cover, 
-                                  width: double.infinity, 
-                                  height: 250, 
+                                  fit: BoxFit.cover,
+                                  width: double.infinity,
+                                  height: 250,
                                 ),
                                 const SizedBox(height: 8),
                                 Text(

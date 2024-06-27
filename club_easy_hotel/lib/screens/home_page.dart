@@ -108,7 +108,7 @@ class HomePage extends StatelessWidget {
 
                 const SizedBox(height: 20),
                 const Text(
-                  'Las mejores tarifas en los mejores hoteles de Bolivia y el mundo.',
+                  'Las mejores tarifas en los mejores hoteles de Bolivia y del mundo.',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 25,
@@ -143,7 +143,20 @@ class HomePage extends StatelessWidget {
                     );
                   },
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 50),
+                OutlinedButton(
+                  onPressed: () {
+                    launchUrl(Uri.parse('https://reservas.easyhotel.com.bo/easyhotel/search'));
+                  },
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: Theme.of(context).primaryColor,
+                    side: BorderSide(color: Theme.of(context).primaryColor, width: 2),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  child: const Text('Hoteles del mundo'),
+                ),
             ],
             ),
           ),
@@ -176,41 +189,31 @@ class HomePage extends StatelessWidget {
             ),*/
             const SizedBox(height: 15),
 
-            // Lista de departamentos
-              GridView.builder(
-                shrinkWrap: true, // Importante para que funcione dentro de SingleChildScrollView
-                physics: const NeverScrollableScrollPhysics(), // Para evitar el desplazamiento propio de la GridView
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 1,
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 10,
-                  childAspectRatio: 1,
-                ),
-                itemCount: departments.length,
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                    onTap: () {
-                      // Acción cuando se toca el departamento
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => DepartmentHotelsPage(department: departments[index]['name']!),
-                        ),
-                      );
-                    },
-                    child: Stack(
-                      alignment: Alignment.bottomCenter,
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: NetworkImage(departments[index]['image']!),
-                              fit: BoxFit.cover,
-                            ),
-                            borderRadius: BorderRadius.circular(10),
+            Column( // Supports for custom item height
+              children: departments.map((state) {
+                return Container(
+                  margin: EdgeInsets.fromLTRB(0, 0, 10.0, 20.0), // 10 pixels gap between rows
+                  height: 300.0, // Set the desired height here
+                  child: Stack(
+                    children: [
+                      Container(
+                        width: double.infinity,
+                        height: double.infinity,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: NetworkImage(state['image']!),
+                            fit: BoxFit.cover,
                           ),
+                          borderRadius: BorderRadius.circular(10),
                         ),
-                        Container(
+                      ),
+                      Positioned(
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        child: Container(
+                          // color: Colors.black.withOpacity(0.0),
+                          padding: EdgeInsets.all(10.0),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                             gradient: LinearGradient(
@@ -222,14 +225,12 @@ class HomePage extends StatelessWidget {
                               ],
                             ),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(16.0),
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(
-                                departments[index]['name']!,
+                                state['name']!,
+                                textAlign: TextAlign.center,
                                 style: const TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
@@ -241,7 +242,7 @@ class HomePage extends StatelessWidget {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => DepartmentHotelsPage(department: departments[index]['name']!),
+                                      builder: (context) => DepartmentHotelsPage(department: state['name']!),
                                     ),
                                   );
                                 },
@@ -256,11 +257,98 @@ class HomePage extends StatelessWidget {
                             ],
                           ),
                         ),
-                      ],
-                    ),
-                  );
-                },
-              ),
+                      ),
+                    ],
+                  ),
+                );
+              }).toList(),
+            ),
+
+            // Lista de departamentos
+            //   GridView.builder(
+            //     shrinkWrap: true, // Importante para que funcione dentro de SingleChildScrollView
+            //     physics: const NeverScrollableScrollPhysics(), // Para evitar el desplazamiento propio de la GridView
+            //     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            //       crossAxisCount: 1,
+            //       crossAxisSpacing: 10,
+            //       mainAxisSpacing: 10,
+            //       childAspectRatio: 1,
+            //     ),
+            //     itemCount: departments.length,
+            //     itemBuilder: (context, index) {
+            //       return GestureDetector(
+            //         onTap: () {
+            //           // Acción cuando se toca el departamento
+            //           Navigator.push(
+            //             context,
+            //             MaterialPageRoute(
+            //               builder: (context) => DepartmentHotelsPage(department: departments[index]['name']!),
+            //             ),
+            //           );
+            //         },
+            //         child: Stack(
+            //           alignment: Alignment.bottomCenter,
+            //           children: [
+            //             Container(
+            //               decoration: BoxDecoration(
+            //                 image: DecorationImage(
+            //                   image: NetworkImage(departments[index]['image']!),
+            //                   fit: BoxFit.cover,
+            //                 ),
+            //                 borderRadius: BorderRadius.circular(10),
+            //               ),
+            //             ),
+            //             Container(
+            //               decoration: BoxDecoration(
+            //                 borderRadius: BorderRadius.circular(10),
+            //                 gradient: LinearGradient(
+            //                   begin: Alignment.bottomCenter,
+            //                   end: Alignment.topCenter,
+            //                   colors: [
+            //                     Colors.black.withOpacity(0.8),
+            //                     Colors.transparent,
+            //                   ],
+            //                 ),
+            //               ),
+            //             ),
+            //             Padding(
+            //               padding: const EdgeInsets.all(16.0),
+            //               child: Column(
+            //                 mainAxisSize: MainAxisSize.min,
+            //                 children: [
+            //                   Text(
+            //                     departments[index]['name']!,
+            //                     style: const TextStyle(
+            //                       color: Colors.white,
+            //                       fontWeight: FontWeight.bold,
+            //                       fontSize: 50,
+            //                     ),
+            //                   ),
+            //                   OutlinedButton(
+            //                     onPressed: () {
+            //                       Navigator.push(
+            //                         context,
+            //                         MaterialPageRoute(
+            //                           builder: (context) => DepartmentHotelsPage(department: departments[index]['name']!),
+            //                         ),
+            //                       );
+            //                     },
+            //                     style: OutlinedButton.styleFrom(
+            //                       side: BorderSide(color: Theme.of(context).primaryColor),
+            //                       shape: RoundedRectangleBorder(
+            //                         borderRadius: BorderRadius.circular(10),
+            //                       ),
+            //                     ),
+            //                     child: const Text('Ver hoteles'),
+            //                   ),
+            //                 ],
+            //               ),
+            //             ),
+            //           ],
+            //         ),
+            //       );
+            //     },
+            //   ),
             const SizedBox(height: 20),
           ],
           ),
