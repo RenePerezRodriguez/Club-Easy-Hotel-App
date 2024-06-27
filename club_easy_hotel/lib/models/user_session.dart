@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
 import 'package:url_launcher/url_launcher.dart';
 
 class UserSession with ChangeNotifier {
@@ -25,7 +24,7 @@ class UserSession with ChangeNotifier {
 Future<void> redirectToLogin(BuildContext context) async {
     const String redirectUrl = 'myapp://login_success';
     final String encodedRedirectUrl = Uri.encodeFull(redirectUrl);
-    final String loginUrl = 'http://admin2.easyhotel.com.bo/sessions/new?redirect_to=$encodedRedirectUrl';
+    final String loginUrl = 'http://admin2.easyhotel.com.bo/sessions/new?from_mobile=true&redirect_to=$encodedRedirectUrl';
 
     if (await canLaunch(loginUrl)) {
       await launch(loginUrl);
@@ -37,7 +36,7 @@ Future<void> redirectToLogin(BuildContext context) async {
       );
     }
   }
-  
+
   void setToken(String? token) {
     _token = token;
     notifyListeners();

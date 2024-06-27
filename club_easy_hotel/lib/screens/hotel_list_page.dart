@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:club_easy_hotel/services/api_service.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
-
+import 'dart:io' show Platform;
 
 class HotelListPage extends StatefulWidget {
   const HotelListPage({super.key});
@@ -169,16 +169,17 @@ class _HotelListPageState extends State<HotelListPage> {
                                         ),
                                         child: const Text('Reservar'),
                                       ),
-                                      OutlinedButton(
-                                        onPressed: () {
-                                        // Reemplaza con el enlace al que quieres que lleve el botón
-                                        launchUrl(Uri.parse('http://admin2.easyhotel.com.bo//sessions/buy_card?redirect_to='));                                        },
-                                        style: OutlinedButton.styleFrom(
-                                          foregroundColor: Theme.of(context).primaryColor,
-                                          side: BorderSide(color: Theme.of(context).primaryColor, width: 2),
+                                      if (!Platform.isIOS)
+                                        OutlinedButton(
+                                          onPressed: () {
+                                          // Reemplaza con el enlace al que quieres que lleve el botón
+                                          launchUrl(Uri.parse('http://admin2.easyhotel.com.bo//sessions/buy_card?redirect_to='));                                        },
+                                          style: OutlinedButton.styleFrom(
+                                            foregroundColor: Theme.of(context).primaryColor,
+                                            side: BorderSide(color: Theme.of(context).primaryColor, width: 2),
+                                          ),
+                                          child: const Text('Comprar membresía'),
                                         ),
-                                        child: const Text('Comprar membresía'),
-                                      ),
                                     ],
                                   ),
                                 ] else if (hotel.whatsapp.isNotEmpty) ...[
