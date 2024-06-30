@@ -4,6 +4,7 @@ import 'package:club_easy_hotel/services/api_service.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:io' show Platform;
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class HotelListPage extends StatefulWidget {
   const HotelListPage({super.key});
@@ -84,8 +85,10 @@ class _HotelListPageState extends State<HotelListPage> {
           } else if (snapshot.hasError) {
             return const Center(child: Text('Ocurrió un error al cargar los hoteles.'));
           } else if (snapshot.hasData) {
-             return ListView.builder(
-                      itemCount: snapshot.data!.length,
+             return AlignedGridView.count(
+                     crossAxisCount: MediaQuery.of(context).size.width > 560 ? 2 : 1, // Number of columns for tablets
+                     mainAxisSpacing: 2,
+                     crossAxisSpacing: 2,
                       itemBuilder: (context, index) {
                         Hotel hotel = snapshot.data![index];
                         return Card(

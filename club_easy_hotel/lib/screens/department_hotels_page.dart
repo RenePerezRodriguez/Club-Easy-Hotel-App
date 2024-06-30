@@ -4,6 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:provider/provider.dart';
 import 'package:club_easy_hotel/models/user_session.dart';
 import 'dart:io' show Platform;
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class DepartmentHotelsPage extends StatelessWidget {
   final String department;
@@ -44,9 +45,11 @@ class DepartmentHotelsPage extends StatelessWidget {
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (snapshot.hasData) {
-            return ListView.builder(
-                      itemCount: snapshot.data!.length,
-                      itemBuilder: (context, index) {
+            return AlignedGridView.count(
+                    crossAxisCount: MediaQuery.of(context).size.width > 560 ? 2 : 1, // Number of columns for tablets
+                    mainAxisSpacing: 2,
+                    crossAxisSpacing: 2,
+                    itemBuilder: (context, index) {
                         Hotel hotel = snapshot.data![index];
                         return Card(
                           margin: const EdgeInsets.all(10),
