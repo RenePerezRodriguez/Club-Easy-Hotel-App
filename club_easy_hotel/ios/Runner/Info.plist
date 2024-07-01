@@ -40,13 +40,6 @@
 		<string>http</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
-	<true/>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Esta aplicación necesita acceder a tu ubicación siempre para proporcionar funcionalidades basadas en la misma.</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Esta aplicación necesita acceder a tu ubicación para proporcionar funcionalidades basadas en la misma.</string>
-	<key>UIApplicationSupportsIndirectInputEvents</key>
-	<true/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

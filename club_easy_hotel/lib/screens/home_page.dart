@@ -1,140 +1,125 @@
-import 'package:club_easy_hotel/screens/department_hotels_page.dart';
+import 'package:club_easy_hotel/data/departments_data.dart';
+import 'package:club_easy_hotel/widgets/department_card.dart';
 import 'package:club_easy_hotel/widgets/search_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:club_easy_hotel/models/user_session.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+// Variable global para controlar la visibilidad del botón de compra de membresía.
+bool showMembershipButton = false;
+
+// HomePage es un StatelessWidget que representa la pantalla principal de la aplicación.
 class HomePage extends StatelessWidget {
-  HomePage({super.key});
-
-  final List<Map<String, String>> departments = [
-  {
-    'name': 'La-Paz',
-    'image': 'https://easyhotel.com.bo/wp-content/uploads/2024/03/marraketa-i4A-nrtqyPw-unsplash-scaled.jpg',
-  },
-  {
-    'name': 'Santa-Cruz',
-    'image': 'https://media.istockphoto.com/id/887636194/es/foto/christian-cathedral-de-santa-cruz-de-las-sierras-bolivia.webp?b=1&s=170667a&w=0&k=20&c=rJlqgFNNnIm-5naKu4OUbOaLNhcM6xIDSBK63meYEFM=',
-  },
-  {
-    'name': 'Cochabamba',
-    'image': 'https://easyhotel.com.bo/wp-content/uploads/2024/03/pexels-david-renken-15013675-scaled.jpg',
-  },
-  {
-    'name': 'Tarija',
-    'image': 'https://media.istockphoto.com/id/1063784930/es/foto/departamento-de-estado-de-tarija-de-bolivia-bandera-tela-tela-ondeando-en-la-niebla-de-la.webp?b=1&s=170667a&w=0&k=20&c=g_q8VXnmP5K4zjOIGSNq3qSxCjTjyQvI4ySVEOTu7xA=',
-  },
-  {
-    'name': 'Potosi',
-    'image': 'https://images.pexels.com/photos/13575545/pexels-photo-13575545.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-  },
-  {
-    'name': 'Chuquisaca',
-    'image': 'https://www.travelandes.com/img/GalleryContent/112619/sucre2.jpg',
-  },
-  {
-    'name': 'Oruro',
-    'image': 'https://images.pexels.com/photos/16963298/pexels-photo-16963298/free-photo-of-gente-calle-festival-musica.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-  },
-  {
-    'name': 'Pando',
-    'image': 'https://media.istockphoto.com/id/1063784892/es/foto/estado-de-pando-departamento-de-bolivia-bandera-tela-tela-ondeando-en-la-niebla-de-la-niebla.webp?b=1&s=170667a&w=0&k=20&c=IesPdd2BRHpV2nn6EiGgiLSBYMRbajUWV7oRkCiWSZ4=',
-  },
-  {
-    'name': 'Beni',
-    'image': 'https://boliviaesturismo.com/wp-content/uploads/2016/05/beni.jpg',
-  },
-];
-
+  // Constructor constante de HomePage con una clave opcional.
+  const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // Utiliza el Provider para obtener el estado de la sesión del usuario.
     final isLoggedIn = Provider.of<UserSession>(context).token != null;
+    // Accede a la sesión del usuario para obtener el nombre, si está disponible.
     final userSession = Provider.of<UserSession>(context);
     final String? name = userSession.userName;
 
+    // Construye la interfaz de usuario de la página de inicio dentro de un Scaffold.
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             children: [
-            Container(
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: const NetworkImage('https://easyhotel.com.bo/wp-content/uploads/2024/03/sasha-kaunas-TAgGZWz6Qg8-unsplash-scaled.jpg'),
-                  fit: BoxFit.cover,
-                  colorFilter: ColorFilter.mode(
-                    Colors.black.withOpacity(0.5),
-                    BlendMode.darken,
+              // Contenedor para la imagen de fondo y el saludo al usuario.
+              Container(
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  // Decoración con una imagen de fondo y un filtro de color.
+                  image: DecorationImage(
+                    image: const NetworkImage('https://easyhotel.com.bo/wp-content/uploads/2024/03/sasha-kaunas-TAgGZWz6Qg8-unsplash-scaled.jpg'),
+                    fit: BoxFit.cover,
+                    colorFilter: ColorFilter.mode(
+                      Colors.black.withOpacity(0.5),
+                      BlendMode.darken,
+                    ),
                   ),
                 ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.network(
-                      'https://easyhotel.com.bo/wp-content/uploads/2024/06/logo-club.png',
-                      width: 200,
-                    ),
-                const SizedBox(height: 10),
-                RichText(
-                  textAlign: TextAlign.center,
-                  text: TextSpan(
-                    style: TextStyle(
-                      fontSize: 0, // make it invisible
-                      color: Colors.white,
-                    ),
+                // Padding interno para el contenido del contenedor.
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      TextSpan(
-                        text: '¡Bienvenido, ',
+                      // Widget para mostrar el logo de EasyHotel.
+                      Image.network(
+                        'https://easyhotel.com.bo/wp-content/uploads/2024/06/logo-club.png',
+                        width: 200,
                       ),
-                      TextSpan(
-                        text: '${name ?? 'invitado'}',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Theme.of(context).primaryColor, // Usa el color primario del tema
+                      const SizedBox(height: 10),
+                      // RichText para el mensaje de bienvenida personalizado.
+                      RichText(
+                        textAlign: TextAlign.center,
+                        text: TextSpan(
+                          style: const TextStyle(
+                            fontSize: 0, // Hace el texto invisible.
+                            color: Colors.white,
+                          ),
+                          children: [
+                            const TextSpan(
+                              text: '¡Bienvenido, ',
+                            ),
+                            TextSpan(
+                              text: name ?? 'invitado',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context).primaryColor, // Utiliza el color primario del tema.
+                              ),
+                            ),
+                            const TextSpan(
+                              text: '!',
+                            ),
+                          ],
                         ),
                       ),
-                      TextSpan(
-                        text: '!',
-                      ),
-                    ],
-                  ),
-                ),
-
+                // Espacio vertical para separar visualmente los elementos.
                 const SizedBox(height: 20),
+
+                // Texto destacado que promociona las ofertas de la aplicación.
                 const Text(
                   'Las mejores tarifas en los mejores hoteles de Bolivia y del mundo.',
                   style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
+                    color: Colors.white, // El color blanco asegura la legibilidad sobre el fondo oscuro.
+                    fontSize: 25, // Tamaño de fuente adecuado para destacar la importancia del mensaje.
+                    fontWeight: FontWeight.bold, // Negrita para dar énfasis al mensaje.
                   ),
-                  textAlign: TextAlign.center,
+                  textAlign: TextAlign.center, // Alineación central para una presentación equilibrada.
                 ),
+
+                // Otro espacio vertical para mantener una estética uniforme.
                 const SizedBox(height: 20),
-                if (isLoggedIn && false) ...[ // hide temporarily
+
+                // Botón condicional que se muestra solo si el usuario está autenticado y la variable showMembershipButton es verdadera.
+                if (isLoggedIn && showMembershipButton) ...[
                   OutlinedButton(
                     onPressed: () {
-                      // Reemplaza con el enlace al que quieres que lleve el botón
+                      // Función que se ejecuta al presionar el botón, en este caso, abrir un enlace web.
                       launchUrl(Uri.parse('http://admin2.easyhotel.com.bo//sessions/buy_card?redirect_to='));
                     },
                     style: OutlinedButton.styleFrom(
-                      side: BorderSide(color: Theme.of(context).primaryColor),
+                      side: BorderSide(color: Theme.of(context).primaryColor), // Borde del botón con el color primario del tema.
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(10), // Bordes redondeados para un diseño moderno y amigable.
                       ),
                     ),
-                    child: const Text('Comprar membresía'),
+                    child: const Text('Comprar membresía'), // Texto del botón que invita a comprar la membresía.
                   ),
                 ],
+
+                // Espacio vertical antes de mostrar el widget de búsqueda.
                 const SizedBox(height: 30),
+
+                // Widget de búsqueda personalizado que permite a los usuarios buscar hoteles.
                 SearchWidget(
                   onSearchResults: (results) {
+                    // Navegación a la página de resultados de búsqueda cuando se obtienen resultados.
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -143,142 +128,39 @@ class HomePage extends StatelessWidget {
                     );
                   },
                 ),
+
+                // Espacio vertical adicional antes de mostrar el siguiente botón.
                 const SizedBox(height: 50),
+
+                // Botón que ofrece una búsqueda global de hoteles.
                 OutlinedButton(
                   onPressed: () {
+                    // Función que se ejecuta al presionar el botón, en este caso, abrir un enlace web.
                     launchUrl(Uri.parse('https://reservas.easyhotel.com.bo/easyhotel/search'));
                   },
                   style: OutlinedButton.styleFrom(
-                    foregroundColor: Theme.of(context).primaryColor,
-                    side: BorderSide(color: Theme.of(context).primaryColor, width: 2),
+                    foregroundColor: Theme.of(context).primaryColor, // Color del texto del botón que utiliza el color primario del tema.
+                    side: BorderSide(color: Theme.of(context).primaryColor, width: 2), // Borde del botón con un ancho destacado.
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(10), // Bordes redondeados para mantener la consistencia del diseño.
                     ),
                   ),
-                  child: const Text('Hoteles del mundo'),
+                  child: const Text('Hoteles del mundo'), // Texto del botón que invita a explorar hoteles alrededor del mundo.
                 ),
             ],
             ),
           ),
         ),
-            /*const Align(
-                    alignment: Alignment.center,
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(vertical: 20.0),
-                      child: Text(
-                        'Departamentos',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),*/
-           /* const SizedBox(height: 20),
-            const Align(
-              alignment: Alignment.center,
-              child: Text(
-                'Selecciona un departamento para ver los hoteles disponibles',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.grey,
-                  fontSize: 16,
-                ),
-              ),
-            ),*/
+            // Espacio vertical para separar visualmente los elementos.
             const SizedBox(height: 15),
-            GridView.builder(
-              shrinkWrap: true, // Importante para que funcione dentro de SingleChildScrollView
-              physics: const NeverScrollableScrollPhysics(), // Para evitar el desplazamiento propio de la GridView
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: MediaQuery.of(context).size.width > 560 ? 2 : 1, // Number of columns for tablets
-                mainAxisExtent: 300, // Fixed height for each item
-                childAspectRatio: 3, // Adjust the aspect ratio as needed (grid with width 30 and height 20 == 3/2)
-                mainAxisSpacing: 20.0, // Gap between rows
-                crossAxisSpacing: 10.0, // Gap between columns
-              ),
-              itemCount: departments.length,
-              itemBuilder: (context, index) {
-                final state = departments[index];
-                return Container(
-                  // margin: EdgeInsets.fromLTRB(0, 0, 10.0, 20.0), // 10 pixels gap between rows
-                  height: 300.0, // Set the desired height here (must match with mainAxisExtent)
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: NetworkImage(state['image']!),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  child: Stack(
-                    children: [
-                      Container(
-                        width: double.infinity,
-                        height: double.infinity,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: NetworkImage(state['image']!),
-                            fit: BoxFit.cover,
-                          ),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                      Positioned(
-                        bottom: 0,
-                        left: 0,
-                        right: 0,
-                        child: Container(
-                          // color: Colors.black.withOpacity(0.0),
-                          padding: EdgeInsets.all(10.0),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(0), // Rounded corners
-                            gradient: LinearGradient(
-                              begin: Alignment.bottomCenter,
-                              end: Alignment.topCenter,
-                              colors: [
-                                Colors.black.withOpacity(0.8),
-                                Colors.transparent,
-                              ],
-                            ),
-                          ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                state['name']!,
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 50,
-                                ),
-                              ),
-                              OutlinedButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => DepartmentHotelsPage(department: state['name']!),
-                                    ),
-                                  );
-                                },
-                                style: OutlinedButton.styleFrom(
-                                  side: BorderSide(color: Theme.of(context).primaryColor),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                ),
-                                child: const Text('Ver hoteles'),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              },
+            // Columna que construye una lista de tarjetas de departamentos.
+            Column(
+              children: departmentsData.map((state) {
+                // Crea una tarjeta de departamento para cada elemento en departmentsData.
+                return DepartmentCard(department: state);
+              }).toList(), // Convierte el resultado del map a una lista.
             ),
+            // Espacio vertical después de la lista de tarjetas de departamentos.
             const SizedBox(height: 20),
           ],
           ),

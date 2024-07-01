@@ -8,8 +8,10 @@ import 'package:club_easy_hotel/widgets/custom_bottom_navigation_bar.dart';
 import 'package:club_easy_hotel/themes/theme.dart';
 import 'package:club_easy_hotel/routes.dart';
 
+/// Punto de entrada principal de la aplicación.
 void main() {
   runApp(
+    // Envuelve la aplicación con el Provider para manejar el estado de la sesión del usuario.
     ChangeNotifierProvider(
       create: (context) => UserSession(),
       child: const MyApp(),
@@ -17,6 +19,7 @@ void main() {
   );
 }
 
+/// Widget principal de la aplicación que define la configuración global.
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -24,60 +27,59 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Club Easy Hotel',
+      // Define las rutas nombradas para la navegación en la aplicación.
       routes: appRoutes,
-      theme: darkTheme,
+      // Aplica el tema oscuro definido en 'theme.dart'.
       darkTheme: darkTheme,
+      // Establece el modo del tema en oscuro.
       themeMode: ThemeMode.dark,
+      // Establece la página de inicio de la aplicación.
       home: const MyHomePage(),
       debugShowCheckedModeBanner: false,
     );
   }
 }
 
+/// Widget de la página de inicio que contiene la navegación principal.
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
 
   @override
   MyHomePageState createState() => MyHomePageState();
-
-  // Agrega esta función pública para cambiar de página
-  static void selectPage(BuildContext context, int index) {
-    final state = context.findAncestorStateOfType<MyHomePageState>();
-    state?.selectPage(index);
-  }
 }
 
+/// Estado del widget MyHomePage que maneja la selección de la página actual.
 class MyHomePageState extends State<MyHomePage> {
+  // Índice de la página seleccionada actualmente en la barra de navegación.
   int _selectedIndex = 0;
 
-  void selectPage(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
+  // Lista de widgets para mostrar en el cuerpo de Scaffold basado en la selección de la barra de navegación.
   final List<Widget> _widgetOptions = <Widget>[
-     HomePage(),
+    HomePage(),
     const HotelListPage(),
     const LoginPage(),
-    // Añade tus otras pantallas aquí
+    // Añade tus otras pantallas aquí.
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // Muestra el widget seleccionado en el cuerpo de Scaffold.
       body: IndexedStack(
         index: _selectedIndex,
         children: _widgetOptions,
       ),
+      // Barra de navegación personalizada para cambiar entre páginas.
       bottomNavigationBar: CustomBottomNavigationBar(
         selectedIndex: _selectedIndex,
         onItemTapped: _onItemTapped,
-        isUserLoggedIn: Provider.of<UserSession>(context).token != null, // Esto verificará si el token de sesión está presente
+        // Verifica si el usuario está conectado para actualizar la interfaz de usuario.
+        isUserLoggedIn: Provider.of<UserSession>(context).token != null,
       ),
     );
   }
 
+  /// Actualiza el índice seleccionado y reconstruye el widget para mostrar la nueva página.
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
