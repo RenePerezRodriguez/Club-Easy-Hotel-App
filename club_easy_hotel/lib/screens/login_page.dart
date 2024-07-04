@@ -1,8 +1,7 @@
 import 'package:club_easy_hotel/models/user_session.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:uni_links/uni_links.dart';
 import 'package:provider/provider.dart';
+import 'package:app_links/app_links.dart';
 import 'dart:async';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:io' show Platform;
@@ -15,43 +14,25 @@ class LoginPage extends StatefulWidget {
 }
 
 class LoginPageState extends State<LoginPage> {
+  late final AppLinks _appLinks;
   StreamSubscription? _sub;
-  Timer? _timer;
-  static const bool _hasRedirected = false;
 
-// Añade esta variable estática al inicio de la clase LoginPageState
-static const platform = MethodChannel('com.easyhotel/deeplink');
-
-// Añade este método en la clase LoginPageState
-Future<void> _handlePlatformDeepLink() async {
-  try {
-    final String result = await platform.invokeMethod('getDeepLink');
-    if (result != null) {
-      // Aquí manejas la URL del deep link como necesites
-      print('Deep link recibido: $result');
-    }
-  } on PlatformException catch (e) {
-    // Maneja la excepción si no se puede obtener el deep link
-    print('Error al obtener el deep link: $e');
-  }
-}
 
   @override
   void initState() {
     super.initState();
+    _appLinks = AppLinks();
     _handleDeepLink();
-    _handlePlatformDeepLink();
   }
 
   @override
   void dispose() {
     _sub?.cancel();
-    _timer?.cancel();
     super.dispose();
   }
 
   void _handleDeepLink() {
-    _sub = uriLinkStream.listen((Uri? uri) {
+    _sub = _appLinks.uriLinkStream.listen((Uri? uri) {
       if (uri != null) {
         final String? sessionToken = uri.queryParameters['session_token'];
         if (sessionToken != null) {
@@ -81,13 +62,7 @@ Future<void> _handlePlatformDeepLink() async {
     });
   }
 
-  void _handleLoginSuccess() {//descomentar para agregar la redireccion al home
-    /*if (!_hasRedirected) {
-      _timer = Timer(const Duration(seconds: 3), () {
-        Navigator.of(context).pushReplacementNamed('/home');
-        _hasRedirected = true;
-      });
-    }*/
+  void _handleLoginSuccess() {
   }
 
    @override
