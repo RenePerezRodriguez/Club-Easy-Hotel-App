@@ -1,5 +1,6 @@
 import 'package:club_easy_hotel/models/user_session.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:uni_links/uni_links.dart';
 import 'package:provider/provider.dart';
 import 'dart:async';
@@ -18,10 +19,28 @@ class LoginPageState extends State<LoginPage> {
   Timer? _timer;
   static const bool _hasRedirected = false;
 
+// Añade esta variable estática al inicio de la clase LoginPageState
+static const platform = MethodChannel('com.easyhotel/deeplink');
+
+// Añade este método en la clase LoginPageState
+Future<void> _handlePlatformDeepLink() async {
+  try {
+    final String result = await platform.invokeMethod('getDeepLink');
+    if (result != null) {
+      // Aquí manejas la URL del deep link como necesites
+      print('Deep link recibido: $result');
+    }
+  } on PlatformException catch (e) {
+    // Maneja la excepción si no se puede obtener el deep link
+    print('Error al obtener el deep link: $e');
+  }
+}
+
   @override
   void initState() {
     super.initState();
     _handleDeepLink();
+    _handlePlatformDeepLink();
   }
 
   @override

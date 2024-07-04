@@ -1,8 +1,6 @@
 import 'package:club_easy_hotel/models/hotel.dart';
 import 'package:club_easy_hotel/widgets/hotel_card.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:club_easy_hotel/models/user_session.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:club_easy_hotel/services/api_service.dart'; // Importa ApiService.
 
@@ -13,7 +11,6 @@ class DepartmentHotelsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isLoggedIn = Provider.of<UserSession>(context).token != null;
 
     return Scaffold(
       appBar: AppBar(
