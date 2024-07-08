@@ -17,7 +17,7 @@ class AuthService {
         await prefs.setString('userImage', jsonResponse['image']);
         await prefs.setString('userName', jsonResponse['name']);
         await prefs.setString('clientDni', jsonResponse['dni']);
-        await prefs.setString('userEmail', jsonResponse['email']);
+        await prefs.setString('userEmail', jsonResponse['expires_at']);
         await prefs.setString('userPhone', jsonResponse['phone']);
         await prefs.setString('userToken', token);
         return true; // Devuelve true si el token es válido

@@ -130,9 +130,9 @@ class LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   ListTile(
-                    leading: Icon(Icons.email, color: Theme.of(context).primaryColor),
+                    leading: Icon(Icons.card_membership_outlined, color: Theme.of(context).primaryColor),
                     title: Text(
-                      'Correo Electrónico: ',
+                      'Fecha de vencimiento',
                       style: TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.bold),
                     ),
                     subtitle: Text(

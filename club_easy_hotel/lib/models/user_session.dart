@@ -85,7 +85,7 @@ Future<void> redirectToLogin(BuildContext context) async {
         setUserImage(jsonResponse['image']);
         setUserName(jsonResponse['name']);
         setclientDni(jsonResponse['dni']);
-        setUserEmail(jsonResponse['email']);
+        setUserEmail(jsonResponse['expires_at']);
         setUserPhone(jsonResponse['phone']);
         setUserId(jsonResponse['id']);
         return true; // Devuelve true si el token es válido
