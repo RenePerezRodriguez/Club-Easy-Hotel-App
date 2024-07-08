@@ -1,3 +1,5 @@
+import 'package:club_easy_hotel/screens/webview_links.dart';
+import 'package:club_easy_hotel/screens/webview_login.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -24,17 +26,15 @@ class UserSession with ChangeNotifier {
 Future<void> redirectToLogin(BuildContext context) async {
     const String redirectUrl = 'myapp://login_success';
     final String encodedRedirectUrl = Uri.encodeFull(redirectUrl);
-    final String loginUrl = 'http://admin2.easyhotel.com.bo/sessions/new?from_mobile=true&redirect_to=$encodedRedirectUrl';
+    final String loginUrl = 'https://admin2.easyhotel.com.bo/sessions/new?from_mobile=true&redirect_to=$encodedRedirectUrl';
 
-    if (await canLaunch(loginUrl)) {
-      await launch(loginUrl);
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('No se pudo realizar la redirección para el login.'),
-        ),
-      );
-    }
+    // Navega a la página de WebView con la URL de inicio de sesión
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => WebViewPageLogin(url: loginUrl),
+      ),
+    );
   }
 
   void setToken(String? token) {

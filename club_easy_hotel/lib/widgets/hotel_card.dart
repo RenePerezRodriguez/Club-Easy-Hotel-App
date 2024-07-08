@@ -1,4 +1,5 @@
 import 'package:club_easy_hotel/models/hotel.dart';
+import 'package:club_easy_hotel/screens/webview_links.dart';
 import 'package:flutter/material.dart';
 import 'package:club_easy_hotel/utils/whatsapp_messaging.dart';
 import 'package:flutter_svg/svg.dart';
@@ -113,9 +114,14 @@ class HotelCard extends StatelessWidget {
                     child: const Text('Reservar'),
                   ),
                   if (!Platform.isIOS)
-                    OutlinedButton(
+                    OutlinedButton(       
                       onPressed: () {
-                        launchUrl(Uri.parse('http://admin2.easyhotel.com.bo//sessions/buy_card?redirect_to='));
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => WebViewPage(url: 'https://admin2.easyhotel.com.bo/sessions/buy_card'),
+                          ),
+                        );
                       },
                       style: OutlinedButton.styleFrom(
                         foregroundColor: Theme.of(context).primaryColor,

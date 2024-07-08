@@ -1,4 +1,5 @@
 import 'package:club_easy_hotel/models/user_session.dart';
+import 'package:club_easy_hotel/screens/webview_links.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:app_links/app_links.dart';
@@ -182,8 +183,13 @@ class LoginPageState extends State<LoginPage> {
                   const SizedBox(height: 20),
                   Platform.isIOS ? Container() : ElevatedButton(
                     onPressed: () {
-                      launchUrl(Uri.parse('http://admin2.easyhotel.com.bo//sessions/buy_card?redirect_to='));
-                    },
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => WebViewPage(url: 'https://admin2.easyhotel.com.bo/sessions/buy_card'),
+                          ),
+                        );
+                      },
                     style: OutlinedButton.styleFrom(
                       side: BorderSide(color: Theme.of(context).primaryColor),
                       shape: RoundedRectangleBorder(
