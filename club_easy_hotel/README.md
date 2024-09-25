@@ -7,3 +7,10 @@ https://theapplaunchpad.com/dashboard/ios/?platform=ios&template=mwaYYuHn&projec
 - Convert the photos into png format, via: `mogrify -format png *.jpg`
 - Add the photos to the assets folder and upload to appconnect
 - 
+
+## IOS deployment
+- `flutter pub get`
+- `flutter build ios`
+- `cd ios/ && pod install` or `pod update`
+- `open ios/Runner.xcworkspace`
+- In Xcode, select the Runner project in the left hand pane

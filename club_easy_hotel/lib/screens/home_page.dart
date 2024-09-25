@@ -110,13 +110,16 @@ class HomePage extends StatelessWidget {
                       ),
                       const SizedBox(height: 50),
                       OutlinedButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => WebViewPage(url: 'https://reservas.easyhotel.com.bo/easyhotel/search'),
-                            ),
-                          );
+                        onPressed: () async {
+                          final Uri url = Uri.parse('https://reservas.easyhotel.com.bo/easyhotel/search');
+                          if (await canLaunchUrl(url)) {
+                            await launchUrl(
+                              url,
+                              mode: LaunchMode.externalApplication, // Ensures the URL opens in an external browser
+                            );
+                          } else {
+                            throw 'Could not launch $url';
+                          }
                         },
                         style: OutlinedButton.styleFrom(
                           foregroundColor: Theme.of(context).primaryColor,
